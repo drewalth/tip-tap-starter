@@ -1,5 +1,7 @@
 # tip-tap-starter
 
+[Demo](https://suspicious-saha-444cc1.netlify.app/)
+
 ## Project setup
 ```
 npm install

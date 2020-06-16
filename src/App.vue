@@ -3,7 +3,6 @@
     <v-app-bar app color="primary" dark>
       <v-toolbar-title>Tip-Tap Demo</v-toolbar-title>
       <v-spacer></v-spacer>
-
       <v-btn
         href="https://github.com/drewalth/tip-tap-starter"
         target="_blank"
@@ -23,7 +22,11 @@
                   ContentEditor.vue
                 </v-card-title>
                 <v-spacer></v-spacer>
-                <v-btn v-if="editMode" class="mr-2" @click.exact="handleCancel"
+                <v-btn
+                  v-if="editMode"
+                  depressed
+                  class="mr-2"
+                  @click.exact="handleCancel"
                   >Cancel</v-btn
                 >
                 <v-btn depressed color="secondary" @click.exact="handleToggle">
@@ -89,10 +92,10 @@ export default {
         this.editMode = true;
       } else {
         if (this.updatedCopy.length) {
-          this.submittedCopy.push(this.updatedCopy)
-          this.initialCopy = this.updatedCopy
-        } 
-        this.editMode = false
+          this.submittedCopy.push(this.updatedCopy);
+          this.initialCopy = this.updatedCopy;
+        }
+        this.editMode = false;
       }
     },
     handleCancel() {
