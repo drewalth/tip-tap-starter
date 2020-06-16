@@ -5,7 +5,7 @@
       <v-spacer></v-spacer>
 
       <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
+        href="https://github.com/drewalth/tip-tap-starter"
         target="_blank"
         text
       >
@@ -20,7 +20,7 @@
             <v-card>
               <div class="d-flex align-center pr-2">
                 <v-card-title>
-                  Lorem Ipsum
+                  ContentEditor.vue
                 </v-card-title>
                 <v-spacer></v-spacer>
                 <v-btn v-if="editMode" class="mr-2" @click.exact="handleCancel"
@@ -30,8 +30,8 @@
                   {{ toggleText }}
                 </v-btn>
               </div>
-              <hr />
-              <div v-if="!editMode" v-text="initialCopy" class="py-4 px-4" />
+              <v-divider v-if="!editMode"></v-divider>
+              <div v-if="!editMode" v-html="initialCopy" class="py-4 px-4" />
               <div v-if="editMode">
                 <ContentEditor
                   showControlBar
@@ -88,7 +88,11 @@ export default {
       if (!this.editMode) {
         this.editMode = true;
       } else {
-        this.submittedCopy.push(this.updatedCopy);
+        if (this.updatedCopy.length) {
+          this.submittedCopy.push(this.updatedCopy)
+          this.initialCopy = this.updatedCopy
+        } 
+        this.editMode = false
       }
     },
     handleCancel() {

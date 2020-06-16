@@ -1,8 +1,6 @@
 <template>
   <div class="content-editor">
-    <h1 v-if="sectionTitle" v-text="sectionTitle" />
-    <label v-if="label" class="bx--label" v-text="label" />
-    <div v-if="showControlBar" class="control-bar">
+    <div class="control-bar">
       <editor-menu-bar v-slot="{ commands, isActive }" :editor="editor">
         <!-- <div class="menubar">
           <div class="toolbar">
@@ -72,24 +70,33 @@
             </button>
           </div>
         </div> -->
-        <v-toolbar dense flat outlined>
+        <v-toolbar flat outlined>
 
-          <v-btn icon>
+          <v-btn icon @click="commands.undo">
             <v-icon>mdi-undo</v-icon>
           </v-btn>
-          <v-btn icon>
+          <v-btn icon @click="commands.redo">
             <v-icon>mdi-redo</v-icon>
           </v-btn>
 
-          <v-btn icon>
+          <v-btn icon @click="commands.bold">
             <v-icon>mdi-format-bold</v-icon>
           </v-btn>
 
-          <v-btn icon>
+          <v-btn icon @click="commands.italic">
             <v-icon>mdi-format-italic</v-icon>
           </v-btn>
-          <v-btn icon>
+          <v-btn icon @click="commands.underline">
             <v-icon>mdi-format-underline</v-icon>
+          </v-btn>
+          <v-btn icon @click="commands.link">
+            <v-icon>mdi-link</v-icon>
+          </v-btn>
+          <v-btn icon @click="commands.paragraph">
+            <v-icon>mdi-format-paragraph</v-icon>
+          </v-btn>
+          <v-btn icon @click="commands.heading({ level: 3 })">
+            <v-icon>mdi-alpha-h-box-outline</v-icon>
           </v-btn>
         </v-toolbar>
       </editor-menu-bar>
@@ -118,17 +125,9 @@ export default {
     EditorMenuBar
   },
   props: {
-    showControlBar: {
-      type: Boolean,
-      required: false
-    },
     content: {
       type: String,
       required: true
-    },
-    label: {
-      type: String,
-      required: false
     },
     placeholder: {
       type: String,
