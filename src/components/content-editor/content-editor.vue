@@ -1,35 +1,16 @@
 <template>
   <div class="content-editor">
-    <h1
-      v-if="sectionTitle"
-      v-text="sectionTitle"
-    />
-    <label
-      v-if="label"
-      class="bx--label"
-      v-text="label"
-    />
-    <div
-      v-if="showControlBar"
-      class="control-bar"
-    >
-      <editor-menu-bar
-        v-slot="{ commands, isActive }"
-        :editor="editor"
-      >
-        <div class="menubar">
+    <h1 v-if="sectionTitle" v-text="sectionTitle" />
+    <label v-if="label" class="bx--label" v-text="label" />
+    <div v-if="showControlBar" class="control-bar">
+      <editor-menu-bar v-slot="{ commands, isActive }" :editor="editor">
+        <!-- <div class="menubar">
           <div class="toolbar">
             <span>
-              <button
-                class="menubar__button"
-                @click="commands.undo"
-              >
-                <Undo16 />
+              <button class="menubar__button" @click="commands.undo">
+                v-icon
               </button>
-              <button
-                class="menubar__button"
-                @click="commands.redo"
-              >
+              <button class="menubar__button" @click="commands.redo">
                 <Redo16 />
               </button>
             </span>
@@ -90,15 +71,34 @@
               <ListNumbered16 />
             </button>
           </div>
-        </div>
+        </div> -->
+        <v-toolbar dense flat outlined>
+
+          <v-btn icon>
+            <v-icon>mdi-undo</v-icon>
+          </v-btn>
+          <v-btn icon>
+            <v-icon>mdi-redo</v-icon>
+          </v-btn>
+
+          <v-btn icon>
+            <v-icon>mdi-format-bold</v-icon>
+          </v-btn>
+
+          <v-btn icon>
+            <v-icon>mdi-format-italic</v-icon>
+          </v-btn>
+          <v-btn icon>
+            <v-icon>mdi-format-underline</v-icon>
+          </v-btn>
+        </v-toolbar>
       </editor-menu-bar>
     </div>
     <editor-content :editor="editor" />
   </div>
 </template>
 <script>
-
-import { Editor, EditorContent, EditorMenuBar } from 'tiptap'
+import { Editor, EditorContent, EditorMenuBar } from "tiptap";
 import {
   Heading,
   OrderedList,
@@ -109,10 +109,10 @@ import {
   Link,
   Underline,
   History
-} from 'tiptap-extensions'
+} from "tiptap-extensions";
 
 export default {
-  name: 'content-editor',
+  name: "content-editor",
   components: {
     EditorContent,
     EditorMenuBar
@@ -132,13 +132,13 @@ export default {
     },
     placeholder: {
       type: String,
-      default: 'Start typing...',
+      default: "Start typing...",
       required: false
     }
   },
-  data () {
+  data() {
     return {
-      updatedContent: '',
+      updatedContent: "",
       editor: new Editor({
         content: this.content || this.placeholder,
         extensions: [
@@ -153,53 +153,46 @@ export default {
           new History()
         ],
         onUpdate: ({ getHTML }) => {
-          this.updatedContent = getHTML()
+          this.updatedContent = getHTML();
           /**
            * @todo need to debounce
            */
-          this.$emit('content:updated', this.updatedContent)
+          this.$emit("content:updated", this.updatedContent);
         }
       })
-    }
+    };
   },
-  mounted () {
-    this.$emit('editor:mounted')
+  mounted() {
+    this.$emit("editor:mounted");
   },
-  beforeDestroy () {
+  beforeDestroy() {
     // Always destroy your editor instance when it's no longer needed
-    this.editor.destroy()
+    this.editor.destroy();
   },
-  destroyed () {
-    this.$emit('editor:destroyed')
+  destroyed() {
+    this.$emit("editor:destroyed");
   }
-}
+};
 </script>
 <style lang="scss">
 .content-editor {
   .ProseMirror {
-    background-color: $ui-02;
-    min-height: 250px;
     padding: 1rem;
   }
   .toolbar {
-    @include layer("raised");
-    border: 1px solid $ui-03;
     display: flex;
     justify-content: space-between;
-    padding: 0 $spacing-xs;
     width: 100%;
 
     button {
-      background-color: $ui-01;
       border: 0;
-      color: $text-01;
       cursor: pointer;
       flex-basis: auto;
       font-size: 1rem;
       margin: 0;
-      padding: $spacing-xs;
+
       &:hover {
-        background-color: $ui-02;
+        // background-color: $ui-02;
       }
       h3 {
         line-height: 1;

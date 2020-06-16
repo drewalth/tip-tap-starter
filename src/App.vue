@@ -1,26 +1,7 @@
 <template>
   <v-app>
     <v-app-bar app color="primary" dark>
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
+      <v-toolbar-title>Tip-Tap Demo</v-toolbar-title>
       <v-spacer></v-spacer>
 
       <v-btn
@@ -28,17 +9,51 @@
         target="_blank"
         text
       >
-        <span class="mr-2">Latest Release</span>
+        <span class="mr-2">Github</span>
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
     </v-app-bar>
     <v-main>
       <v-container>
         <v-row justify="center" align="center">
-          <v-col sm="12" md="6" lg="8">
-            <h1>Headline</h1>
-            <hr />
-            <p v-text="initialCopy" />
+          <v-col sm="12" md="6" lg="6">
+            <v-card>
+              <div class="d-flex align-center pr-2">
+                <v-card-title>
+                  Lorem Ipsum
+                </v-card-title>
+                <v-spacer></v-spacer>
+                <v-btn v-if="editMode" class="mr-2" @click.exact="handleCancel"
+                  >Cancel</v-btn
+                >
+                <v-btn depressed color="secondary" @click.exact="handleToggle">
+                  {{ toggleText }}
+                </v-btn>
+              </div>
+              <hr />
+              <div v-if="!editMode" v-text="initialCopy" class="py-4 px-4" />
+              <div v-if="editMode">
+                <ContentEditor
+                  showControlBar
+                  :content="initialCopy"
+                  @content:updated="handleUpdate"
+                />
+              </div>
+            </v-card>
+          </v-col>
+        </v-row>
+        <v-row justify="center" align="center">
+          <v-col sm="12" md="6" lg="6" v-if="submittedCopy.length">
+            <v-divider class="mb-4"></v-divider>
+            <v-card
+              v-for="(item, index) in submittedCopy"
+              :key="index"
+              class="mb-3"
+              flat
+              outlined
+            >
+              <div v-text="item" class="py-4 px-4" />
+            </v-card>
           </v-col>
         </v-row>
       </v-container>
@@ -47,14 +62,42 @@
 </template>
 
 <script>
-import { copy } from "@/mock-data"
+import { copy } from "@/mock-data";
+import ContentEditor from "@/components/content-editor/content-editor.vue";
 export default {
   name: "App",
-  data:() => ({
-    initialCopy: ''
+  data: () => ({
+    editMode: false,
+    initialCopy: "",
+    updatedCopy: "",
+    submittedCopy: []
   }),
+  components: {
+    ContentEditor
+  },
+  computed: {
+    toggleText() {
+      return this.editMode ? "Save" : "Edit";
+    }
+  },
+  methods: {
+    handleUpdate(copy) {
+      this.updatedCopy = copy;
+    },
+    handleToggle() {
+      if (!this.editMode) {
+        this.editMode = true;
+      } else {
+        this.submittedCopy.push(this.updatedCopy);
+      }
+    },
+    handleCancel() {
+      this.updatedCopy = "";
+      this.editMode = false;
+    }
+  },
   created() {
-    this.initialCopy = copy
+    this.initialCopy = copy;
   }
 };
 </script>
